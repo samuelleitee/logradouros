@@ -1,11 +1,12 @@
+const User = require("../models/User");
 const userService = require("../services/user.service");
 const mongoose = require("mongoose");
 
 const create = async (req, res) => {
     try {
-        const {name, username, email, password, avatar, background} = req.body;
+        const {name, email, password} = req.body;
 
-        if (!name || !username || !email || !password || !avatar || !background) {
+        if (!name || !email || !password) {
             res.status(400).send({message: "Submit all fields for registration"});
         };
 
@@ -19,10 +20,7 @@ const create = async (req, res) => {
             user: {
                 user: user._id,
                 name,
-                username,
                 email, 
-                avatar,
-                background
             }
         });
     } catch (error) {
@@ -56,9 +54,9 @@ const findById = async (req, res) => {
 
 const update = async (req, res) => {
     try {
-        const {name, username, email, password, avatar, background} = req.body;
+        const {name, email, password} = req.body;
 
-        if (!name && !username && !email && !password && !avatar && !background) {
+        if (!name && !email && !password) {
             res.status(400).send({message: "Submit at least one field for registration"})
         };
 
@@ -67,10 +65,7 @@ const update = async (req, res) => {
         await userService.updateService(
             id, 
             name,
-            username,
             password,
-            avatar,
-            background
         );
 
         res.send({message: "User succesfully updated!"});
@@ -79,4 +74,26 @@ const update = async (req, res) => {
     };
 };
 
-module.exports = { create, findAll, findById, update };
+const deleteById = async (req, res) => {
+   try {
+        const { user } = req;
+
+        user = await userService.deleteById(user.id)
+
+        res.status(200).json({message: "Usuário deletado com sucesso!", deletedUser})
+    } catch (error) {
+        res.status(500).send({message: error.message});
+    };
+}
+
+const deleteAll = async (req, res) => {
+    try {
+        await userService.deleteAll()
+
+        res.status(200).send({message: "Todos os usuários foram deletados com sucesso!"});
+    } catch (error) {
+        res.status(500).send({message: error.message});
+    }
+}
+
+module.exports = { create, findAll, findById, update, deleteById, deleteAll };
