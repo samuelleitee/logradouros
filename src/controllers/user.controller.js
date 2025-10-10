@@ -18,7 +18,7 @@ const create = async (req, res) => {
         res.status(201).send({
             message: "User created succesfully",
             user: {
-                user: user._id,
+                id: user._id,
                 name,
                 email, 
             }
@@ -78,7 +78,7 @@ const deleteById = async (req, res) => {
    try {
         const { user } = req;
 
-        user = await userService.deleteById(user.id)
+        const deletedUser = await userService.deleteById(user.id)
 
         res.status(200).json({message: "Usuário deletado com sucesso!", deletedUser})
     } catch (error) {

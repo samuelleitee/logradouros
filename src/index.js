@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 
 const userRoute = require("./routes/user.route");
 const authRoute = require("./routes/auth.route");
+const complaintRoute = require("./routes/complaint.route");
 // const swaggerRoute = require("./routes/swagger.route");
 
 dotenv.config();
@@ -13,6 +14,7 @@ app.use(express.json());
 
 app.use("/user", userRoute);
 app.use("/auth", authRoute);
+app.use("/complaint", complaintRoute);
 // app.use("/doc", swaggerRoute);
 
 app.get("/", (req, res) => res.status(200).send({message: "API WORKING"}))
